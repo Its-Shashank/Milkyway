@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+const auth = require('../middlewares/check-auth')
 // order model
 const Order = require('../models/milkOrder')
 
 // Create a new order
-router.post('/', (req, res) => {
+router.post('/', auth, (req, res) => {
     const order = new Order({
         _id: mongoose.Types.ObjectId(),
         milkType: req.body.milkType,
@@ -37,7 +38,7 @@ router.post('/', (req, res) => {
 
 // Get all orders
 
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
     Order.find()
     .exec()
     .then(result => {
@@ -49,7 +50,7 @@ router.get('/', (req, res) => {
 })
 
 // Delete an order
-router.delete('/:orderId', (req, res) => {
+router.delete('/:orderId', auth, (req, res) => {
     Order.deleteOne({_id: req.params.orderId})
     .then(result => {
         let message
