@@ -7,38 +7,40 @@ const Order = require('../models/milkOrder')
 
 // Create a new order
 router.post('/', auth, (req, res) => {
-    const order = new Order({
-        _id: mongoose.Types.ObjectId(),
-        milkType: req.body.milkType,
-        quantity: req.body.quantity,
-        deliveryTime: req.body.deliveryTime,
-        address: req.body.address,
-        contact: req.body.contact
+    Order
+    .countDocuments()
+    .then(orderCount => {
+        if (orderCount <= 1) {
+            const order = new Order({
+                _id: mongoose.Types.ObjectId(),
+                milkType: req.body.milkType,
+                quantity: req.body.quantity,
+                deliveryTime: req.body.deliveryTime,
+                plan: req.body.plan,
+                address: req.body.address,
+                contact: req.body.contact
+            })
+            order.save()
+            .then(result => {
+                res.status(201).json({
+                    message: 'Order placed successfully',
+                    result
+                })
+            })
+            .catch(err => {
+                res.status(500).json({err})
+            })
+        }
+        else {
+            res.status(400).json({message: "Can't add more than one order from an account"})
+        }
     })
-    let price
-    if (order.milkType === 'Full cream') {
-        price = 28
-    }
-    if (order.milkType === 'Toned'){
-        price = 25
-    }
-    const amount = price * order.quantity
-    order.save()
-    .then(result => {
-        res.status(201).json({
-            message: 'Order placed successfully',
-            result,
-            totalAmountToBePaid: amount
-        })
-    })
-    .catch(err => {
-        res.status(500).json({err})
-    })
+    .catch(e => console.log(e))
 })
 
 // Get all orders
 
-router.get('/', auth, (req, res) => {
+router.get('/all', auth, (req, res) => {
     Order.find()
     .exec()
     .then(result => {

@@ -15,6 +15,18 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // timeslot: {
+    //     type: String,
+    //     required: true
+    // },
+    plan: {
+        type: String,
+        required: true
+    },
+    // price: {
+    //     type: Number,
+    //     required: true
+    // },
     address: {
         type: String,
         required: true

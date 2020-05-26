@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken')
 const auth = require('../middlewares/check-auth')
 // Customer model
 const Customer = require('../models/customer')
-//https://xhamster2.desi/videos/homemade-horny-and-hot-amateur-lesbian-sex-at-home-12875156
 
 // Create a customer
 router.post('/signup', (req, res) => {
@@ -21,10 +20,9 @@ router.post('/signup', (req, res) => {
             }
             const customer = new Customer({
                 _id: mongoose.Types.ObjectId(),
+                name: req.body.name,
                 email: req.body.email,
-                password: hash,
-                phone: req.body.phone,
-                address: req.body.address
+                password: hash
             })
             customer.save()
             .then(result => {
@@ -34,7 +32,8 @@ router.post('/signup', (req, res) => {
                 })
             })
             .catch(err => {
-                res.status(500).json({err})
+                console.log(err)
+                res.status(500).json({err: 'Backend error'})
             })
         })
     })
@@ -51,7 +50,7 @@ router.post('/login', (req, res) => {
                 message: 'Auth failed'
             })
         }
-        
+        const name = customer[0].name
         bcrypt.compare(req.body.password, customer[0].password, (err, result) => {
             if (err) {
                 return res.status(400).json({
@@ -65,14 +64,14 @@ router.post('/login', (req, res) => {
                 },
                 process.env.SECRET,
                 {
-                    expiresIn: '1h'
+                    expiresIn: '24h'
                 })
                 return res.status(201).json({
                     message: 'You are logged in',
-                    token
+                    token,
+                    name
                 })
             }
-            console.log(token)
             res.status(401).json({
                 message:'Auth failed'
             })
@@ -86,9 +85,9 @@ router.post('/login', (req, res) => {
 // Find all customers
 router.get('/', (req, res) => {
     Customer.find()
-    .select('_id email password phone address')
+    .select('_id email password')
     .then(result => {
-        res.status(201).json(result)
+        res.status(200).json(result)
     })
     .catch(err => {
         res.status(404).json(err)
@@ -98,9 +97,9 @@ router.get('/', (req, res) => {
 // Get customer details
 router.get('/:customerId', auth, (req, res) => {
     Customer.findById({_id: req.params.customerId})
-    .select('_id email password phone address')
+    .select('_id email password')
     .then(result => {
-        res.status(201).json({result})
+        res.status(202).json({result})
     })
     .catch(err => {
         res.status(404).json({err})

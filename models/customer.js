@@ -18,15 +18,15 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    phone: {
-        type: Number,
-        required: true
-    },
-    address: {
-        type: String,
-        required: true,
-        trim: true
-    }
+    // phone: {
+    //     type: Number,
+    //     required: true
+    // },
+    // address: {
+    //     type: String,
+    //     required: true,
+    //     trim: true
+    // }
 })
 
 module.exports = mongoose.model('Customer', customerSchema)
