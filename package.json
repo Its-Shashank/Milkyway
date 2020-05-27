@@ -4,7 +4,8 @@
   "description": "This is the milky site api",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon/app.js"
+    "start": "nodemon/app.js",
+    "dev": "node app.js"
   },
   "author": "Shashank Gaur",
   "license": "ISC",
