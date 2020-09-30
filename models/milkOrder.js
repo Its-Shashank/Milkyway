@@ -1,40 +1,30 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    milkType: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    quantity: {
-        type: Number,
-        required: true
-    },
-    deliveryTime: {
-        type: String,
-        required: true
-    },
-    // timeslot: {
-    //     type: String,
-    //     required: true
-    // },
-    plan: {
-        type: String,
-        required: true
-    },
-    // price: {
-    //     type: Number,
-    //     required: true
-    // },
-    address: {
-        type: String,
-        required: true
-    },
-    contact: {
-        type: Number,
-        required: true
-    }
-})
+	plan: {
+		type: String,
+		required: true
+	},
+	quantity: {
+		type: Number,
+		required: true
+	},
+	totalAmount: {
+		type: Number,
+		required: true
+	},
+	planStartDate: {
+		type: String,
+		required: true
+	},
+	planEndDate: {
+		type: String,
+		required: true
+	},
+	address: {
+		type: String,
+		required: true
+	}
+});
 
-module.exports = mongoose.model('Order', orderSchema)
+module.exports = mongoose.model('Order', orderSchema);
